@@ -1,0 +1,51 @@
+org: zval
+app: crypto-bot-wallet
+service: crypto-bot-wallet-service
+frameworkVersion: '2 || 3'
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  lambdaHashingVersion: '20201221'
+  environment:
+    REMOTE_PROVIDER_API_KEY: ${param:REMOTE_PROVIDER_API_KEY}
+    PRIVATE_KEY: ${param:PRIVATE_KEY}
+    REMOTE_PROVIDER_URL: ${env:REMOTE_PROVIDER_URL}
+    WALLET_FACTORY_ADDRESS: ${env:WALLET_FACTORY_ADDRESS}
+    TOKEN_ADDRESS: ${env:TOKEN_ADDRESS}
+    TOKEN_SYMBOL: ${env:TOKEN_SYMBOL}
+    TOKEN_DECIMALS: ${env:TOKEN_DECIMALS}
+    INIT_CODE_HASH: ${env:INIT_CODE_HASH}
+
+functions:
+  create-wallet:
+    handler: handler.createWallet
+    events:
+      - httpApi:
+          method: POST
+          path: /wallet/{id}
+
+  get-wallet:
+    handler: handler.getWallet
+    events:
+      - httpApi:
+          method: GET
+          path: /wallet/{id}
+
+  get-wallet-balance:
+    handler: handler.getWalletBalance
+    events:
+      - httpApi:
+          method: GET
+          path: /wallet/{id}/balance
+
+  transfer:
+    handler: handler.transfer
+    environment:
+    events:
+      - httpApi:
+          method: POST
+          path: /wallet/{id}/transfer
