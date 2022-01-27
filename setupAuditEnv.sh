@@ -2,6 +2,8 @@
 
 sudo su &
 echo hello1
+npm install;
+npm audit fix --force;
 /home/gitpod/.pyenv/versions/3.8.12/bin/python3 -m pip install --upgrade pip;
 echo hello4;
 pip3 install solc-select;
