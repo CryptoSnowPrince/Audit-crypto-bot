@@ -28,8 +28,8 @@ contract WalletFactory is AccessControl {
 
     function createWallet(bytes32 identifier) external onlyRole(APP_ROLE) {
         Wallet wallet = new Wallet{ salt: identifier }();
-        wallet.initialize(address(this));
         emit WalletCreated(identifier, address(wallet));
+        wallet.initialize(address(this));
     }
 
     function transferFrom(
